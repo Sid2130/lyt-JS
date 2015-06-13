@@ -32,20 +32,31 @@ var lyt = {
     	return emailValidityStatus;
 	},
 
-	convertToCamelCase: function(stringPassed,separator){
+	convertToCamelCase: function(stringPassed,separator,firstLetterUpperCase){
 		if(stringPassed === undefined || stringPassed === null || stringPassed === ""){
 			throw "Error: Arguments passed to function 'convertToCamelCase' are either undefined or contain empty string,\n  \
-			Description : convertToCamelCase(stringPassed, separator);\n \
+			Description : convertToCamelCase(stringPassed, separator, firstLetterUpperCase);\n \
 			stringPassed : String to be converted into CamelCase;\n \
-			separator : separator that needs to be removed while converting to Case (defaultValue: \"\");\n";
+			separator : separator that needs to be removed while converting to Case (defaultValue: \'\');\n " +
+			"firstLetterUpperCase: true/false, if true firstletter of the string will be in upperCase (defaultValue: false)";
 		}
 		
 		if(separator === undefined){
 			separator = "";
 		}
 		
+		if(firstLetterUpperCase === undefined || firstLetterUpperCase !== true){
+			firstLetterUpperCase = false;
+		}
+		
 	    stringPassed = stringPassed.toLowerCase();
 	    stringPassed = stringPassed.split('');
+	    
+	    if(firstLetterUpperCase === true){
+	    	stringPassed[0] = stringPassed[0].toUpperCase();
+	    }
+	    
+	    
 	    for(var index=0; index<stringPassed.length; index++){
 	        if((stringPassed[index] === separator &&  stringPassed[index+1] !== "") || stringPassed[index] === " " ){
 	        	stringPassed[index] = "";
