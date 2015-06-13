@@ -32,8 +32,33 @@ var lyt = {
     	return emailValidityStatus;
 	},
 
-
-
+	convertToCamelCase: function(stringPassed,separator){
+		if(stringPassed === undefined || stringPassed === null || stringPassed === ""){
+			throw "Error: Arguments passed to function 'convertToCamelCase' are either undefined or contain empty string,\n  \
+			Description : convertToCamelCase(stringPassed, separator);\n \
+			stringPassed : String to be converted into CamelCase;\n \
+			separator : separator that needs to be removed while converting to Case (defaultValue: \"\");\n";
+		}
+		
+		if(separator === undefined){
+			separator = "";
+		}
+		
+	    stringPassed = stringPassed.toLowerCase();
+	    stringPassed = stringPassed.split('');
+	    for(var index=0; index<stringPassed.length; index++){
+	        if((stringPassed[index] === separator &&  stringPassed[index+1] !== "") || stringPassed[index] === " " ){
+	        	stringPassed[index] = "";
+	            stringPassed[index+1] = stringPassed[index+1].toUpperCase();
+	        }
+	    }
+	    
+	    stringPassed = stringPassed.join("");
+	    stringPassed = this.removeSpace(stringPassed);
+	    return stringPassed;
+	},
+	
+	
 	checkElementInArray: function(passedArray, elementToCheck){
 		if(passedArray.indexOf(elementToCheck) < 0 ){
 			return false;
@@ -43,7 +68,28 @@ var lyt = {
 		}
 	},
 
-
+	createObjectForThisGroupOfInputs: function(parentSelector){
+		if(parentSelector === undefined){
+			throw "Error: parentSelector argument is undefined,\n  \
+			Description : createObjectForThisGroupOfInputs(parentSelector);\n \
+			parentSelector : Selector which contains the input fields to be converted into JSON Object;\n \ ";
+		}
+		var ObjectToReturn = {};
+		$('[data-object-key="true"]',parentSelector).each(function(){
+			var key = $(this).attr('name');
+			if($(this).is(':radio')){
+				if($(this).is(':checked')){
+					ObjectToReturn[key] = $('input[type="radio"][name="'+key+'"]:checked').val();
+				}
+			}
+			else{
+				ObjectToReturn[key] = $(this).val();
+			}
+			
+		});
+		
+		return ObjectToReturn;
+	},
 
 	validateJQuery: function(){
 		if(typeof $ === "function" || typeof jQuery === "function"){
@@ -214,7 +260,8 @@ var lyt = {
 		
 	},
 
-
+	
+	
 	addScriptDynamically: function(scriptUrl){
 		var head = document.head;
   		var script = document.createElement('script');
