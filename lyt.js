@@ -43,6 +43,16 @@ var lyt = {
 		
 		if(separator === undefined){
 			separator = "";
+			
+			var validateSpaceInString = stringPassed;
+			if(validateSpaceInString.split(" ").length === 1){
+				return stringPassed;
+			}
+		}
+		
+		
+		if(stringPassed.indexOf(separator) < 0){
+			return stringPassed;
 		}
 		
 		if(firstLetterUpperCase === undefined || firstLetterUpperCase !== true){
@@ -285,8 +295,6 @@ var lyt = {
 
 	argumentsBasicValidity : function(argumentsArrayToTest){
 		var validityStatusFlag = true;
-		console.log(argumentsArrayToTest);
-		console.log(argumentsArrayToTest.length);
 		for(var index=0; index<argumentsArrayToTest.length; index++){
 			if(this.isUndefined(argumentsArrayToTest[index])){
 				console.log(index+" ===== undefined");
@@ -318,7 +326,7 @@ var lyt = {
 	},
 
 	isEmptyString: function(identifierToCheck){
-		return this.removeSpace(identifierToCheck) === "";
+		return (identifierToCheck+"") === "";
 	},
 
 }
