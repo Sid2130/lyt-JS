@@ -41,22 +41,39 @@ var lyt = {
 			"firstLetterUpperCase: true/false, if true firstletter of the string will be in upperCase (defaultValue: false)";
 		}
 		
+		if(firstLetterUpperCase === undefined || firstLetterUpperCase !== true){
+			firstLetterUpperCase = false;
+		}
+		
 		if(separator === undefined){
 			separator = "";
 			
-			var validateSpaceInString = stringPassed;
-			if(validateSpaceInString.split(" ").length === 1){
+			var validateSpaceInThisString = stringPassed;
+			if(validateSpaceInThisString.split(" ").length === 1){
+				stringPassed = stringPassed.split("");
+				if(firstLetterUpperCase){
+					stringPassed[0] = stringPassed[0].toUpperCase();
+				}
+				else{
+					stringPassed[0] = stringPassed[0].toLowerCase();
+				}
+				stringPassed = stringPassed.join("");
 				return stringPassed;
 			}
 		}
 		
 		
-		if(stringPassed.indexOf(separator) < 0){
-			return stringPassed;
-		}
 		
-		if(firstLetterUpperCase === undefined || firstLetterUpperCase !== true){
-			firstLetterUpperCase = false;
+		if(stringPassed.indexOf(separator) < 0){
+			stringPassed = stringPassed.split("");
+			if(firstLetterUpperCase){
+				stringPassed[0] = stringPassed[0].toUpperCase();
+			}
+			else{
+				stringPassed[0] = stringPassed[0].toLowerCase();
+			}
+			stringPassed = stringPassed.join("");
+			return stringPassed;
 		}
 		
 	    stringPassed = stringPassed.toLowerCase();
@@ -64,6 +81,9 @@ var lyt = {
 	    
 	    if(firstLetterUpperCase === true){
 	    	stringPassed[0] = stringPassed[0].toUpperCase();
+	    }
+	    else{
+	    	stringPassed[0] = stringPassed[0].toLowerCase();
 	    }
 	    
 	    
@@ -78,6 +98,9 @@ var lyt = {
 	    stringPassed = this.removeSpace(stringPassed);
 	    return stringPassed;
 	},
+	
+	
+	
 	
 	
 	checkElementInArray: function(passedArray, elementToCheck){
@@ -102,6 +125,9 @@ var lyt = {
 				if($(this).is(':checked')){
 					ObjectToReturn[key] = $('input[type="radio"][name="'+key+'"]:checked').val();
 				}
+			}
+			else if( ($(this).is('div')) || ($(this).is('span')) || ($(this).is('li')) ){
+				ObjectToReturn[key] = $(this).text().trim();
 			}
 			else{
 				ObjectToReturn[key] = $(this).val();
