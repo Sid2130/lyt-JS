@@ -112,39 +112,72 @@ var lyt = {
 		}
 	},
 
-	createObjectForThisGroupOfInputs: function(parentSelector){
-		if(parentSelector === undefined){
-			throw "Error: parentSelector argument is undefined,\n  \
-			Description : createObjectForThisGroupOfInputs(parentSelector);\n \
-			parentSelector : Selector which contains the input fields to be converted into JSON Object;\n \ ";
-		}
-		var ObjectToReturn = {};
-		$('[data-object-key="true"]',parentSelector).each(function(){
-			var key = $(this).attr('name');
-			if($(this).is(':radio')){
-				if($(this).is(':checked')){
-					ObjectToReturn[key] = $('input[type="radio"][name="'+key+'"]:checked').val();
-				}
-			}
-			else if( ($(this).is('div')) || ($(this).is('span')) || ($(this).is('li')) ){
-				ObjectToReturn[key] = $(this).text().trim();
-			}
-			else{
-				ObjectToReturn[key] = $(this).val();
-			}
-			
-		});
-		
-		return ObjectToReturn;
-	},
+	createObjectForThisGroupOfInputs: function(parentId){
+	    var objectToReturn = {};
+	    var fetchBySingleValueElements = ["textarea", "text", "radio", "select-one"];
+	    var fetchByMultipleValueElements = ["checkbox", "select-multiple"];
 
-	validateJQuery: function(){
-		if(typeof $ === "function" || typeof jQuery === "function"){
-			return true;
-		}
-		else{
-			return false;
-		}
+	    var parentElement = document.getElementById(parentId);
+	    objectElements = parentElement.getElementsByClassName('objectElement');
+	    var objectElementLength = objectElements.length;
+
+	    for( var index=0; index<objectElementLength; index++){
+	    	var keyName = '',
+	    		value = '',
+	    		valueArray = [];
+	    	keyName = objectElements[index].getAttribute("data-name");
+	    	if( fetchBySingleValueElements.indexOf(objectElements[index].type) > -1){
+	    		if(objectElements[index].type === "radio"){
+	    			if(objectElements[index].checked){
+		    			value = objectElements[index].value;
+		    			objectToReturn[keyName] = value;
+		    		}
+	    		}
+	    		else{
+	    			if(objectElements[index].type === "select-one"){
+	    				var currentElement = objectElements[index];
+	    				value = currentElement.options[currentElement.selectedIndex].value;
+	    			}
+	    			else{
+	    				value = objectElements[index].value;
+	    			}
+	    			objectToReturn[keyName] = value;
+	    		}
+	    		// objectToReturn[keyName] = value;
+	    	}
+
+	    	else if( fetchByMultipleValueElements.indexOf(objectElements[index].type) > -1 ){
+	    		if(objectElements[index].type === "checkbox"){
+	    			if(objectElements[index].checked){
+		    			value = objectElements[index].value;
+		    			if(objectToReturn.hasOwnProperty(keyName)){
+		    				objectToReturn[keyName].push(value);
+		    			}
+		    			else{
+		    				objectToReturn[keyName] = [];
+		    				objectToReturn[keyName].push(value);
+		    			}
+		    		}
+	    		}
+	    		else{
+	    			var options = objectElements[index].options;
+	    			value = [];
+	    			for(var jindex=0; jindex<options.length; jindex++){
+						if(options[jindex].selected){ 
+							value.push(options[jindex].value);
+						}
+					};
+					objectToReturn[keyName] = value;
+	    		}
+	    	}
+
+	    	else{
+    			value = objectElements[index].innerText;
+    			objectToReturn[keyName] = value;
+	    	}
+	    }
+	    console.log(JSON.stringify(objectToReturn));
+	    return objectToReturn;
 	},
 
 
