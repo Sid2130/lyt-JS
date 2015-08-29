@@ -20,7 +20,7 @@
     <header>
       <div class="inner">
         <h1>Lyt-js</h1>
-        <h2>Simple JS library with commonly used functions</h2>
+        <h2>Simple JS library with commonly used functions witten in Native JavaScript</h2>
         <a href="https://github.com/Sid2130/lyt-JS" class="button"><small>View project on</small> GitHub</a>
       </div>
     </header>
@@ -28,7 +28,65 @@
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-          <p>It is a simply library which gives some commomlu used functions</p>
+          <h1>
+<a id="available-functions-" class="anchor" href="#available-functions-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Available Functions :</h1>
+
+<hr>
+
+<h2>
+<a id="lytfindselector-selectortype-parentreference-index" class="anchor" href="#lytfindselector-selectortype-parentreference-index" aria-hidden="true"><span class="octicon octicon-link"></span></a>lyt.find(selector, selectorType, parentReference, index)</h2>
+
+<p><strong>Will find and return the html element from DOM</strong></p>
+
+<h3>
+<a id="selector" class="anchor" href="#selector" aria-hidden="true"><span class="octicon octicon-link"></span></a>selector</h3>
+
+<p>Mandatory field. value should be paased as string and it can be name of Class/Id/TagName/Name or a css-query selector.</p>
+
+<h3>
+<a id="selectortype" class="anchor" href="#selectortype" aria-hidden="true"><span class="octicon octicon-link"></span></a>selectorType</h3>
+
+<p>Mandatory field. what kind of selector is passed. Possible values and return types.
+<strong>'id':</strong> when element is to found by using id. will return the element with id passed in selector.  </p>
+
+<p><strong>'class':</strong> when element is to found by using class. will return array of all the elements with class passed in selector.  </p>
+
+<p><strong>'tag/tagname':</strong> when element is to found by using html-tag. will return array of all the elements with tag passed in selector.  </p>
+
+<p><strong>'name':</strong>when element is to found by using name. will return element with name passed in selector.  </p>
+
+<p>emptystring('')/undefined:**pass '' or leave this field undefined when css-query  is passed in selector. Will return array of all the elements with css-query passed in selector.</p>
+
+<h3>
+<a id="parentreference" class="anchor" href="#parentreference" aria-hidden="true"><span class="octicon octicon-link"></span></a>parentReference</h3>
+
+<p>Optional field. if not passed search will be made in entire document. else reference of and element can be passed within which search will be performed</p>
+
+<h3>
+<a id="index" class="anchor" href="#index" aria-hidden="true"><span class="octicon octicon-link"></span></a>index</h3>
+
+<p>Optional field. In case of class/tag/css-query, return type is an array. Pass an integer value to directly get the element instead of array.    </p>
+
+<p><strong>example:</strong>   </p>
+
+<pre><code>`&lt;div id="main-container"&gt;
+    &lt;span class="inner-content"&gt;1&lt;/span&gt;
+    &lt;span class="inner-content"&gt;2&lt;/span&gt;
+    &lt;span class="inner-content"&gt;3&lt;/span&gt;
+    &lt;input type="text" name='username' /&gt;
+&lt;/div&gt;
+&lt;span class="inner-content"&gt;3&lt;/span&gt;`
+</code></pre>
+
+<p>var ref = lyt.find('main-container','id'); // will return reference of "main-container"<br>
+var ref = lyt.find('inner-content','class');  // will return array of elements with class name "inner-content"<br>
+var ref = lyt.find('span','tag');  // will return array of all the spans<br>
+var ref = lyt.find('username','name');  // will return reference of input with name='username'</p>
+
+<p>var parentRef = lyt.find('main-container','id');
+var ref = lyt.find('inner-content','class', parentRef ); // will return array of elements with class name "inner-content" within the "main-container" i.e only 1, 2 and 3</p>
+
+<p>var ref = lyt.find('inner-content','class', parentRef, 1 ); // will return reference of second element with class name "inner-content" within the "main-container" .</p>
         </section>
 
         <aside id="sidebar">
